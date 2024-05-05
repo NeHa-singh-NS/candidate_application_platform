@@ -1,0 +1,23 @@
+.jobDescription {
+  margin-bottom: 16px; /* Adjust as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show three lines by default */
+  -webkit-box-orient: vertical;
+  max-height: 3.6em; /* Adjust based on line height */
+  backdrop-filter: blur(4px); /* Blur effect */
+}
+
+.expanded {
+  -webkit-line-clamp: unset;
+  max-height: unset;
+}
+
+.readMoreButton {
+  text-transform: none;
+}
+
+.showLessButton {
+  text-transform: none;
+}
