@@ -47,7 +47,11 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             height: "20px",
             padding: "2px !important",
           },
-          "& .MuiChip-root": { borderRadius: "8px" },
+          "& .MuiChip-root": {
+            borderRadius: "8px",
+            height: "22px",
+            lineHeight: "22px",
+          },
         }}
         multiple
         value={undefined} // Ensure value is always an array

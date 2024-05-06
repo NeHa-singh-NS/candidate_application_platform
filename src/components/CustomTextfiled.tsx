@@ -24,6 +24,7 @@ const CustomTextField = ({
   const styles = {
     root: {
       "& .MuiOutlinedInput-root": {
+        borderRadius: "4px",
         height: "40px",
         width: "250px",
         fontSize: "12px",
@@ -36,6 +37,7 @@ const CustomTextField = ({
       },
       "& .MuiInputLabel-root": {
         fontSize: 12,
+
         "&.Mui-focused": {
           borderColor: color,
           color: color,
@@ -45,11 +47,16 @@ const CustomTextField = ({
   };
 
   return (
-    <Box mt={3} sx={{ display: "flex", flexDirection: "column" }}>
+    <Box mt={0.8} sx={{ display: "flex", flexDirection: "column" }}>
       <InputLabel
-        sx={{ fontSize: "13px", fontWeight: "500px", color: "black" }}
+        sx={{
+          fontSize: "13px",
+          fontWeight: "500px",
+          color: "black",
+          visibility: value.length > 0 ? "visible" : "hidden",
+        }}
       >
-        {value.length ? placeholder : ""}
+        {placeholder}
       </InputLabel>
       <TextField
         placeholder={value.length ? "" : placeholder}

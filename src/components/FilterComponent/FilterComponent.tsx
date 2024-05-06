@@ -86,7 +86,7 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
 
   return (
     <Grid justifyContent="center" container spacing={2}>
-      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
+      <Grid mr={2} item sm={6} md={4} lg={3} xl={2}>
         <FormControl fullWidth variant="outlined" size="small">
           <MultiSelect
             label="Roles"
@@ -116,7 +116,7 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
           </Select>
         </FormControl>
       </Grid> */}
-      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
+      <Grid mr={2} item sm={6} md={4} lg={3} xl={2}>
         <FormControl fullWidth variant="outlined" size="small">
           <MultiSelect
             label="Experience"
@@ -128,7 +128,7 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
           />
         </FormControl>
       </Grid>
-      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
+      <Grid mr={2} item sm={6} md={4} lg={3} xl={2}>
         <FormControl fullWidth variant="outlined" size="small">
           <MultiSelect
             label="Remote"
@@ -140,7 +140,7 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
           />
         </FormControl>
       </Grid>
-      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
+      <Grid mr={2} item sm={6} md={4} lg={3} xl={2}>
         <FormControl fullWidth variant="outlined" size="small">
           <MultiSelect
             label="Minimum Base Pay"
@@ -152,9 +152,9 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
           />
         </FormControl>
       </Grid>
-      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
+      <Grid mr={2} item sm={6} md={4} lg={3} xl={2}>
         <CustomTextField
-          placeholder="Company Name"
+          placeholder="Search Company Name"
           label=""
           value={filters.companyName}
           onChange={(e) => handleFilterChange("companyName", e.target.value)}
