@@ -4,13 +4,12 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Box, InputLabel } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface MultiSelectProps {
   label: string;
   id?: string;
-  options: string[];
-  value: string[]; // Change type to always be an array
+  options: string[] | number[];
+  value: string[] | string;
   onChange: (value: string[]) => void;
 }
 

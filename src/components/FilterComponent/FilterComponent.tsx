@@ -9,7 +9,7 @@ interface FilterOptions {
   employees: string[];
   experience: string[];
   remote: string[];
-  basePay: string[];
+  basePay: string;
   companyName: String;
 }
 
@@ -23,7 +23,7 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
     employees: [],
     experience: [],
     remote: [],
-    basePay: [],
+    basePay: "",
     companyName: "",
   });
 
@@ -68,8 +68,13 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
   }, [filters]);
 
   return (
-    <Box mt={4} display="flex" justifyContent="center" alignItems="center">
-      <Grid container justifyContent="center" spacing={2}>
+    <Box
+      mt={4}
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Grid ml={2} container spacing={2.3}>
         <Grid mr={2} item sm={6} md={4} lg={3} xl={2}>
           <FormControl fullWidth variant="outlined" size="small">
             <MultiSelect
@@ -104,7 +109,7 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
           <FormControl fullWidth variant="outlined" size="small">
             <MultiSelect
               label="Experience"
-              options={experienceOptions}
+              options={String(experienceOptions)}
               value={filters.experience}
               onChange={(value: string[]) =>
                 handleFilterChange("experience", value.join(","))

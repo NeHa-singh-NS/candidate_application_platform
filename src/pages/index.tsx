@@ -34,14 +34,14 @@ const Home: React.FC = () => {
     if (windowHeight + scrollTop >= documentHeight) {
       if (!loading) {
         // Fetch more job listings if not already loading
-        fetchData();
+        fetchData({});
       }
     }
   };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    fetchData();
+    fetchData({});
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -51,6 +51,7 @@ const Home: React.FC = () => {
     const experienceFilter = Array.isArray(filters.experience)
       ? filters.experience.map((exp: string) => parseInt(exp))
       : [parseInt(filters.experience)];
+
     let basePayFilter: number[] = [];
     if (Array.isArray(filters.basePay) && filters.basePay.length === 2) {
       const [min, max] = filters.basePay.map((value) => parseInt(value));
@@ -93,25 +94,44 @@ const Home: React.FC = () => {
     });
     setFilteredJobListings(filteredJobs);
   };
-  console.log(filteredJobListings);
   return (
     <>
-      <Box m={4}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        mt={4}
+      >
         <Widget onFilter={handleFilter} />
-        <Grid mt={4} container spacing={1}>
-          {filteredJobListings.length > 0
-            ? filteredJobListings.map((job: any, index: number) => (
+        <Grid mt={4} p={3} container spacing={1}>
+          {" "}
+          {/* Center aligning the Grid container */}
+          {jobListings.length > 0 ? (
+            filteredJobListings.length > 0 ? (
+              filteredJobListings.map((job: any, index: number) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                  {" "}
+                  {/* Adjusting grid size for lg breakpoint */}
                   <JobCard job={job} />
                 </Grid>
               ))
-            : jobListings.map((job: any, index: number) => (
+            ) : (
+              jobListings.map((job: any, index: number) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                  {" "}
+                  {/* Adjusting grid size for lg breakpoint */}
                   <JobCard job={job} />
                 </Grid>
-              ))}
+              ))
+            )
+          ) : (
+            <Grid item xs={12}>
+              No jobs found.
+            </Grid>
+          )}
+          {loading && <CircularProgress />}
         </Grid>
-        {loading && <CircularProgress />}
       </Box>
     </>
   );

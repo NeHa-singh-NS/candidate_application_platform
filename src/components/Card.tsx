@@ -8,10 +8,17 @@ import {
   Avatar,
   Stack,
   Box,
+  Popover,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import { JobListing } from "../types/types";
 import Image from "next/image";
 import ApprovalIcon from "@mui/icons-material/Approval";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface Props {
   job: JobListing;
@@ -19,6 +26,7 @@ interface Props {
 
 const JobCard: React.FC<Props> = ({ job }) => {
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [open, setOpen] = React.useState(false);
 
   const {
     jobRole,
@@ -35,8 +43,16 @@ const JobCard: React.FC<Props> = ({ job }) => {
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <Card elevation={5} sx={{ minWidth: 275, margin: 2, borderRadius: "20px" }}>
+    <Card elevation={5} sx={{ minWidth: 200, margin: 2, borderRadius: "20px" }}>
       <Chip
         sx={{ m: 1, p: 1.8, borderRadius: "10px", borderColor: "#9BABB8" }}
         icon={<ApprovalIcon />}
@@ -112,7 +128,7 @@ const JobCard: React.FC<Props> = ({ job }) => {
           )}
           {jobDetailsFromCompany.length > 200 && !expanded && (
             <Button
-              onClick={toggleExpanded}
+              onClick={handleClickOpen}
               style={{
                 display: "block",
                 margin: "0 auto",
@@ -122,18 +138,26 @@ const JobCard: React.FC<Props> = ({ job }) => {
               View Job
             </Button>
           )}
-          {expanded && (
-            <Button
-              onClick={toggleExpanded}
-              style={{
-                display: "block",
-                margin: "0 auto",
-                textTransform: "none",
-              }}
-            >
-              ... Show less
-            </Button>
-          )}
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"About the Company"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {jobDetailsFromCompany}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} autoFocus>
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Typography>
         <Typography variant="body1" gutterBottom>
           <Typography variant="subtitle1" fontWeight="bold">
