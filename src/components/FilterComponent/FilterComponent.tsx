@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Grid,
-  Button,
-} from "@mui/material";
+import { FormControl, Grid } from "@mui/material";
 import { fetchDropdownOptions } from "@api/options";
 import MultiSelect from "../SelectComponent";
+import CustomTextField from "../CustomTextfiled";
 
 interface FilterOptions {
   role: string[];
@@ -34,15 +27,22 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
     companyName: "",
   });
 
-  const experienceOptions = ["All", "0-2 years", "2-5 years", "5+ years"];
-  const minimumPayOptions = ["All", "0-50k", "51k-100k", "101k-150k"];
+  const experienceOptions = Array.from({ length: 11 }, (_, i) => i); // Experience options from 0 to 10
+  const minimumPayOptions = [
+    "0-10L",
+    "11L-20L",
+    "21L-30L",
+    "31L-40L",
+    "41L-50L",
+    "51L-60L",
+    "61L-70L",
+  ]; // Minimum base pay options from 0L to 70L
   const [options, setOptions] = useState<Record<string, string[]>>({});
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
 
   const fetchData = async () => {
     try {
       const dropdownOptions = await fetchDropdownOptions(); // Fetch dropdown options
-      console.log(dropdownOptions, "dropss");
       setOptions(dropdownOptions);
     } catch (error) {
       console.error("Error fetching dropdown options:", error);
@@ -56,6 +56,7 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
     filterName: keyof FilterOptions,
     value: string | string[]
   ) => {
+    console.log(filterName, value);
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filterName]: value,
@@ -83,21 +84,9 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
     onFilter({ ...filters, experience: value });
   };
 
-  //   const handleRemoteChange = (value: string[]) => {
-  //     onFilter({ ...filters, remote: value.join(",") });
-  //   };
-
-  //   const handleBasePayChange = (value: string[]) => {
-  //     onFilter({ ...filters, basePay: value.join(",") });
-  //   };
-
-  const handleApplyFilter = () => {
-    onFilter(filters);
-  };
-  console.log(options, "options");
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={3} sm={2}>
+    <Grid justifyContent="center" container spacing={2}>
+      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
         <FormControl fullWidth variant="outlined" size="small">
           <MultiSelect
             label="Roles"
@@ -127,22 +116,8 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
           </Select>
         </FormControl>
       </Grid> */}
-      <Grid item xs={12} md={3} sm={2}>
+      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
         <FormControl fullWidth variant="outlined" size="small">
-          {/* <Select
-            labelId="experience-label"
-            id="experience"
-            value={filters.experience}
-            onChange={(e) =>
-              handleFilterChange("experience", e.target.value as string)
-            }
-          >
-            {experienceOptions.map((exp, index) => (
-              <MenuItem key={index} value={exp}>
-                {exp}
-              </MenuItem>
-            ))}
-          </Select> */}
           <MultiSelect
             label="Experience"
             options={experienceOptions}
@@ -153,73 +128,38 @@ const Widget: React.FC<WidgetProps> = ({ onFilter }) => {
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} md={3} sm={2}>
+      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
         <FormControl fullWidth variant="outlined" size="small">
-          {/* <Select
-            labelId="remote-label"
-            id="remote"
-            value={filters.remote}
-            onChange={(e) =>
-              handleFilterChange("remote", e.target.value as string)
-            }
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="yes">Yes</MenuItem>
-            <MenuItem value="no">No</MenuItem>
-          </Select> */}
           <MultiSelect
             label="Remote"
-            options={["Admin", "User", "Manager", "Developer"]}
-            value={selectedRoles}
-            onChange={handleRoleChange}
+            options={["Remote", "Hybrid", "Onsite"]}
+            value={filters.remote}
+            onChange={(value: string[]) =>
+              handleFilterChange("remote", value.join(","))
+            }
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} md={3} sm={2}>
-        {/* <Select
-            labelId="base-pay-label"
-            id="base-pay"
+      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
+        <FormControl fullWidth variant="outlined" size="small">
+          <MultiSelect
+            label="Minimum Base Pay"
+            options={minimumPayOptions}
             value={filters.basePay}
-            onChange={(e) =>
-              handleFilterChange("basePay", e.target.value as string)
-            }
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="0-50k">0-50k</MenuItem>
-            <MenuItem value="51k-100k">51k-100k</MenuItem>
-            <MenuItem value="101k-150k">101k-150k</MenuItem>
-          </Select> */}
-        <MultiSelect
-          label="Minimum Base Pay"
-          options={minimumPayOptions}
-          value={filters.basePay}
-          onChange={(value: string[]) => {
-            handleFilterChange("basePay", value.join(","));
-            onFilter({ ...filters, basePay: value.join(",") });
-          }}
+            onChange={(value: string[]) => {
+              handleFilterChange("basePay", value.join(","));
+            }}
+          />
+        </FormControl>
+      </Grid>
+      <Grid mr={1} item sm={6} md={4} lg={3} xl={2}>
+        <CustomTextField
+          placeholder="Company Name"
+          label=""
+          value={filters.companyName}
+          onChange={(e) => handleFilterChange("companyName", e.target.value)}
         />
       </Grid>
-      <Grid item xs={12} md={3} sm={2}>
-        {/* <FormControl fullWidth variant="outlined" size="small">
-          <TextField
-            id="companyName"
-            label="Company Name"
-            variant="outlined"
-            size="small"
-            value={filters.companyName}
-            onChange={(e) => handleFilterChange("companyName", e.target.value)}
-          />
-        </FormControl> */}
-      </Grid>
-      {/* <Grid item xs={12} sm={2}>
-        <Button
-          variant="contained"
-          onClick={handleApplyFilter}
-          sx={{ borderRadius: "8px" }}
-        >
-          Apply Filters
-        </Button>
-      </Grid> */}
     </Grid>
   );
 };

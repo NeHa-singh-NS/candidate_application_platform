@@ -1,4 +1,3 @@
-// Home.tsx
 import React, { useEffect, useState } from "react";
 import JobCard from "../components/Card";
 import { fetchJobListings } from "@api/list";
@@ -14,7 +13,8 @@ const Home: React.FC = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const newJobListings = await fetchJobListings(10, page); // Fetching 10 jobs starting from index 0
+      const newJobListings = await fetchJobListings(20, page);
+      console.log(newJobListings);
       setJobListings((prevListings) => [...prevListings, ...newJobListings]);
       setPage((prevPage) => prevPage + 1);
       setLoading(false);
@@ -47,44 +47,54 @@ const Home: React.FC = () => {
   }, []);
 
   const handleFilter = (filters: any) => {
-    console.log("Base Pay Filter:", filters.basePay);
+    const experienceFilter = Array.isArray(filters.experience)
+      ? filters.experience.map((exp: string) => parseInt(exp))
+      : [parseInt(filters.experience)];
+
+    let basePayFilter: number[] = [];
+    if (filters.basePay) {
+      const [min, max] = filters.basePay
+        .split("-")
+        .map((value) => parseInt(value));
+      basePayFilter = [min, max];
+    }
+
     const filteredJobs = jobListings.filter((job) => {
-      if (filters.basePay && typeof filters.basePay === "string") {
-        const [minSalary, maxSalary] = filters.basePay.split("-");
-        const jobMinSalary = job.minJdSalary || 0;
-        const jobMaxSalary = job.maxJdSalary || Number.MAX_SAFE_INTEGER;
-        if (
-          jobMinSalary < parseInt(minSalary) ||
-          jobMaxSalary > parseInt(maxSalary)
-        ) {
-          return false;
-        }
-      }
-
-      // Example: Filter by role
-      if (filters.role && job.jobRole !== filters.role) {
-        return false;
-      }
-      if (
-        filters.companyName &&
-        job.companyName.toLowerCase() !== filters.companyName.toLowerCase()
-      ) {
-        return false;
-      }
-
-      if (
-        filters.experience.length > 0 &&
-        !filters.experience.includes(job.experience)
-      ) {
-        return false;
-      }
-
-      // Add more filter conditions as needed
-      return true;
+      const location = job.location.toLowerCase();
+      const selectedLocation = String(filters.remote).toLowerCase();
+      // Check if job meets all filter criteria
+      return (
+        // Filter by role
+        ((filters.role.length === 0 || filters.role.includes(job.jobRole)) &&
+          // Filter by company name
+          (filters.companyName === "" ||
+            job.companyName.toLowerCase() ===
+              filters.companyName.toLowerCase()) &&
+          // Filter by remote
+          ((selectedLocation === "remote" && location === "remote") ||
+            (selectedLocation !== "remote" && location !== "remote")) &&
+          // Filter by base pay
+          (filters.basePay === "" ||
+            (job.minJdSalary !== null &&
+              job.maxJdSalary !== null &&
+              job.minJdSalary >= basePayFilter[0] &&
+              job.maxJdSalary <= basePayFilter[1])) &&
+          // Filter by experience
+          (experienceFilter.length === 0 ||
+            (job.minExp !== null &&
+              job.maxExp !== null &&
+              experienceFilter.some(
+                (exp) => job.minExp <= exp && job.maxExp >= exp
+              )))) ||
+        // If job's experience range is null, include it for any experience selection
+        (job.minExp === null &&
+          job.maxExp === null &&
+          experienceFilter.includes(0))
+        // Add more filter conditions as needed
+      );
     });
     setFilteredJobListings(filteredJobs);
   };
-  console.log(filteredJobListings, "fffff");
   return (
     <>
       <Box m={4}>

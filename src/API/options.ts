@@ -9,7 +9,6 @@ export const fetchDropdownOptions = async (): Promise<
     const jobListings = await fetchJobListings(10, 0);
     const roles = extractUniqueValues(jobListings, "jobRole");
     const locations = extractUniqueValues(jobListings, "location");
-
     return { roles, locations }; // Return dropdown options
   } catch (error) {
     console.error("Error fetching dropdown options:", error);

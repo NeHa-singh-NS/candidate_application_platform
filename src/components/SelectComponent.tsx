@@ -21,8 +21,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   value = [],
   onChange,
 }) => {
-  console.log("Options:", options);
-  console.log("Value:", value);
   const handleOnChange = (
     event: React.ChangeEvent<{}>,
     newValue: string | string[]
@@ -32,7 +30,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   };
 
   return (
-    <Box m={4} sx={{ maxWidth: "fit-content", height: "38px" }}>
+    <Box mt={3} sx={{ maxWidth: "fit-content", height: "38px" }}>
       <Autocomplete
         sx={{
           width: "250px",
