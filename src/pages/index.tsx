@@ -3,6 +3,7 @@ import JobCard from "../components/Card";
 import { fetchJobListings } from "@api/list";
 import { Box, Grid } from "@mui/material";
 import Widget from "../components/FilterComponent/FilterComponent";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Home: React.FC = () => {
   const [jobListings, setJobListings] = useState<any[]>([]);
@@ -10,10 +11,10 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
 
-  const fetchData = async () => {
+  const fetchData = async (filters: any) => {
     try {
       setLoading(true);
-      const newJobListings = await fetchJobListings(20, page);
+      const newJobListings = await fetchJobListings(10, page, filters);
       console.log(newJobListings);
       setJobListings((prevListings) => [...prevListings, ...newJobListings]);
       setPage((prevPage) => prevPage + 1);
@@ -50,12 +51,9 @@ const Home: React.FC = () => {
     const experienceFilter = Array.isArray(filters.experience)
       ? filters.experience.map((exp: string) => parseInt(exp))
       : [parseInt(filters.experience)];
-
     let basePayFilter: number[] = [];
-    if (filters.basePay) {
-      const [min, max] = filters.basePay
-        .split("-")
-        .map((value) => parseInt(value));
+    if (Array.isArray(filters.basePay) && filters.basePay.length === 2) {
+      const [min, max] = filters.basePay.map((value) => parseInt(value));
       basePayFilter = [min, max];
     }
 
@@ -95,34 +93,25 @@ const Home: React.FC = () => {
     });
     setFilteredJobListings(filteredJobs);
   };
+  console.log(filteredJobListings);
   return (
     <>
       <Box m={4}>
         <Widget onFilter={handleFilter} />
-        <Grid p={4} container spacing={1}>
-          {jobListings.length > 0 ? (
-            // Render filtered job listings if filter criteria are applied
-            filteredJobListings.length > 0 ? (
-              filteredJobListings.map((job: any, index: number) => (
+        <Grid mt={4} container spacing={1}>
+          {filteredJobListings.length > 0
+            ? filteredJobListings.map((job: any, index: number) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                   <JobCard job={job} />
                 </Grid>
               ))
-            ) : (
-              // Render all job listings if no filter criteria are applied
-              jobListings.map((job: any, index: number) => (
+            : jobListings.map((job: any, index: number) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                   <JobCard job={job} />
                 </Grid>
-              ))
-            )
-          ) : (
-            <Grid item xs={12}>
-              No jobs found.
-            </Grid>
-          )}
-          {loading && <p>Loading...</p>}
+              ))}
         </Grid>
+        {loading && <CircularProgress />}
       </Box>
     </>
   );

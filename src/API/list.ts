@@ -1,4 +1,8 @@
-export const fetchJobListings = async (limit: number, offset: number) => {
+export const fetchJobListings = async (
+  limit: number,
+  offset: number,
+  filters: string
+) => {
   try {
     const response = await fetch(
       "https://api.weekday.technology/adhoc/getSampleJdJSON",
