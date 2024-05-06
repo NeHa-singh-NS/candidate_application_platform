@@ -16,7 +16,7 @@ export const fetchJobListings = async (limit: number, offset: number) => {
     }
 
     const data = await response.json();
-    return data.jdList; // Return the jdList array from the response data
+    return data.jdList;
   } catch (error) {
     throw new Error("Failed to fetch job listings");
   }
