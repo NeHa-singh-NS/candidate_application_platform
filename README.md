@@ -11,34 +11,32 @@ git clone <repository_url>
 
 ### Step 2: Navigate to the Project Directory
 
-```markdown
+```
 2. Navigate to the project directory:
 
-```bash
+
 cd candidate-application-platform
 
 
 ### Step 3: Install Dependencies
 
-```markdown
+```
 3. Install dependencies:
 
-```bash
 npm install
 
 ### Step 4: Start the Development Server
 
-```markdown
+```
 4. Start the development server:
 
-```bash
+
 npm start
 
 ### Step 5: Open the Application in Your Browser
 
-```markdown
+```
 
-````
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -51,7 +49,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Technologies Used
 
-- ReactJs
+- ReactJs / NextJs
 - Redux
 - CSS
 - Material UI
+````
